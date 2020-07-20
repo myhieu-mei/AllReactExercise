@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .products {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr ;
+        }
+    </style>
+</head>
+<body>
+    <form onsubmit="onSubmitAdd(event)">
+        <input type="text" name="title" value="">
+        <input type="text" name="price" value="">
+        <button>Add</button>
+        <div id="products" class="products"></div>
+    </form>
+
+    <script>
+        function onSubmitAdd(event){
+            event.preventDefault();
+            var title = event.target['title'].value;
+            var price = event.target['price'].value;
+            var product= {
+                title: title,
+                price: price
+            }
+
+          
+            var products= JSON.parse(localStorage.getItem("products"));
+            if(!products){
+                 products = [];
+            }
+            products.push(product);
+            localStorage.setItem("products",JSON.stringify(products));
+            console.log(products);
+            displayProducts();
+        }
+
+        function displayProducts(){
+            var productsDiv = document.getElementById("products");
+            var products = JSON.parse(localStorage.getItem("products"));
+            console.log(products);
+            for(let i=0; i<products.length; i++){
+                let product = document.createElement("div");
+                let productTitle = document.createElement("h2");
+                let productPrice = document.createElement("p");
+                productTitle.innerText= products[i].title;
+                productPrice.innerText= products[i].price;
+                product.appendChild(productTitle);
+                product.appendChild(productPrice);
+                productsDiv.appendChild(product);
+            }
+        }
+    </script>
+</body>
+</html>
